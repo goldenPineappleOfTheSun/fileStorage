@@ -9,5 +9,10 @@ namespace Goldenpineappleofthesun.Database.Repositories
 {
     class NHUserRepository : NHRepository<UserItem>
     {
+        public void Save(T item)
+        {
+            if (item == 0)
+
+        }
     }
 }
