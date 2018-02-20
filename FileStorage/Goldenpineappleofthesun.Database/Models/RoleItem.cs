@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Goldenpineappleofthesun.Database.Models
 {
-    class RoleItem : IEntity
+    public class RoleItem : IEntity
     {
         public virtual long Id { get; set; }
 

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Goldenpineappleofthesun.Database.Models
 {
-    class DocumentItem : IEntity
+    public class DocumentItem : IEntity
     {
         public virtual long Id { get; set; }
 
         public virtual string Name { get; set; }
 
-        public virtual DateTime Date { get; set; }
+        public virtual DateTime CreationDate { get; set; }
 
         public virtual UserItem Author { get; set; }
 

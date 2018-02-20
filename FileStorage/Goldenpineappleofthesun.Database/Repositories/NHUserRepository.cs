@@ -7,12 +7,30 @@ using System.Threading.Tasks;
 
 namespace Goldenpineappleofthesun.Database.Repositories
 {
-    class NHUserRepository : NHRepository<UserItem>
+    public class NHUserRepository : NHRepository<UserItem>
     {
-        public void Save(T item)
-        {
-            if (item == 0)
+        private IList<UserItem> Users = new List<UserItem>();
 
+        public void Save(UserItem item)
+        {
+            var session = NHHelper.GetCurrentSession();
+            var result = session
+                .CreateSQLQuery("EXEC CreateUser  @Login=:Login, @Password=:Password, @Name=:Name, @Role=:Role")
+                .SetString("Login", item.Login)
+                .SetString("Password", item.Password)
+                .SetString("Name", item.Name)
+                .SetInt64("Role", item.Role.Id)
+                .ExecuteUpdate();
+        }
+
+        public UserItem GetByLogin(string login)
+        {
+            var session = NHHelper.GetCurrentSession();
+
+            return session
+                .QueryOver<UserItem>()
+                .And(i => i.Login == login)
+                .SingleOrDefault();
         }
     }
 }

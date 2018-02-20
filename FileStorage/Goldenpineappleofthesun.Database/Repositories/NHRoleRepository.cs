@@ -7,7 +7,16 @@ using System.Threading.Tasks;
 
 namespace Goldenpineappleofthesun.Database.Repositories
 {
-    class NHRoleRepository : NHRepository<RoleItem>
+    public class NHRoleRepository : NHRepository<RoleItem>
     {
+        public RoleItem GetByName(string name)
+        {
+            var session = NHHelper.GetCurrentSession();
+
+            return session
+                .QueryOver<RoleItem>()
+                .And(i => i.Name == name)
+                .SingleOrDefault();
+        }
     }
 }

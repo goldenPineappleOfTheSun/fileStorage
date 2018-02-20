@@ -64,6 +64,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DocumentItem.cs" />
@@ -92,8 +93,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Database.mdf</DependentUpon>
     </Content>
-    <EmbeddedResource Include="Mappings\Document.hbm.xml" />
-    <EmbeddedResource Include="Mappings\RoleItem.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Document.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mappings\RoleItem.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Mappings\UserItem.hbm.xml" />
   </ItemGroup>
   <ItemGroup>

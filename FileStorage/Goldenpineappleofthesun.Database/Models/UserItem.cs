@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Goldenpineappleofthesun.Database.Models
 {
-    class UserItem : IEntity
+    public class UserItem : IEntity
     {
         public virtual long Id { get; set; }
 
