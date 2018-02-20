@@ -52,7 +52,7 @@ namespace Goldenpineappleofthesun.Web.Controllers
 
             if (DBHelper.Users.GetByLogin(model.Login) == null)
             {
-                DBHelper.AddToUsers(model.Login, model.Password, model.Name, model.BirthDay);
+                DBHelper.Ad(model.Login, model.Password, model.Name, model.BirthDay);
                 FormsAuthentication.SetAuthCookie(model.Login, true);
                 return RedirectToAction("Index", "Calc");
             }
