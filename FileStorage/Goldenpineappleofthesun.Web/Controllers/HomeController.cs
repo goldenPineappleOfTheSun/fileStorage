@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Goldenpineappleofthesun.Database.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,16 @@ namespace Goldenpineappleofthesun.Web.Controllers
     {
         public ActionResult Index()
         {
+            /*var doc = new DocumentItem();
+            var user = new UserItem();
+            user.Id = 0;
+            doc.Name = "Dasha";
+            doc.Author = user;
+            doc.CreationDate = DateTime.Now;
+            doc.FileName = "path";*/
+
+            DBHelper.AddUser("dasha", "123", "Даша", "Standart");
+
             return View();
         }
 
