@@ -17,5 +17,14 @@ namespace Goldenpineappleofthesun.Database.Models
         public virtual string Password { get; set; }
 
         public virtual RoleItem Role { get; set; }
+
+        public virtual UserStatus Status { get; set; }
+    }
+
+    public enum UserStatus
+    {
+        Deleted = 0,
+        Active = 1,
+        Banned = 2
     }
 }

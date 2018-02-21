@@ -10,6 +10,7 @@
     <property name="Name"/>
     <property name="Login"/>
     <property name="Password"/>
+    <property name="Status" />
 
     <many-to-one name="Role" class="RoleItem"/>
 

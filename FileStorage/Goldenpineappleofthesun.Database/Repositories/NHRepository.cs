@@ -12,22 +12,61 @@ namespace Goldenpineappleofthesun.Database.Repositories
     {
         public void Delete(long id)
         {
-            throw new NotImplementedException();
+            var item = Find(id);
+
+            if (item != null)
+            {
+                var session = NHHelper.GetCurrentSession();
+                try
+                {
+                    using (var transaction = session.BeginTransaction())
+                    {
+                        session.Delete(item);
+                        transaction.Commit();
+                    }
+                }
+                finally
+                {
+                    NHHelper.CloseSession();
+                }
+            }
         }
 
         public T Find(long id)
         {
-            throw new NotImplementedException();
+            var session = NHHelper.GetCurrentSession();
+
+            return session.Get<T>(id);
         }
 
         public IList<T> GetAll()
         {
-            throw new NotImplementedException();
+            using (var session = NHHelper.GetCurrentSession())
+            {
+                return session.CreateCriteria<T>().List<T>();
+            }
+        }
+
+        public IEnumerable<T> GetAll(string condition)
+        {
+            return GetAll();
         }
 
         public void Save(T item)
         {
-            throw new NotImplementedException();
+            var session = NHHelper.GetCurrentSession();
+            try
+            {
+                using (var transaction = session.BeginTransaction())
+                {
+                    session.SaveOrUpdate(item);
+                    transaction.Commit();
+                }
+            }
+            finally
+            {
+                NHHelper.CloseSession();
+            }
         }
     }
 }
