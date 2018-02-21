@@ -32,5 +32,25 @@ namespace Goldenpineappleofthesun.Database.Repositories
                 .And(i => i.Login == login)
                 .SingleOrDefault();
         }
+
+        public bool Check(string login, string password)
+        {
+            var session = NHHelper.GetCurrentSession();
+
+            return session
+                .QueryOver<UserItem>()
+                .And(u => u.Login == login && u.Password == password && u.Status == UserStatus.Active)
+                .RowCount() > 0;
+        }
+
+        public void Delete(long id)
+        {
+            var user = Find(id);
+            if (user != null)
+            {
+                user.Status = UserStatus.Deleted;
+                Save(user);
+            }
+        }
     }
 }
