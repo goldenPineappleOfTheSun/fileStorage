@@ -20,6 +20,21 @@ namespace Goldenpineappleofthesun.MVC
 
         #region User
 
+        /// <summary>
+        /// Получить список всех пользователей
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        public static IList<UserItem> GetAllUsers()
+        {
+            return Users.GetAll();
+        }
+
+        /// <summary>
+        /// Получить пользователя по логину
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public static UserItem GetUserByLogin(string login)
         {
             return Users.GetByLogin(login);
