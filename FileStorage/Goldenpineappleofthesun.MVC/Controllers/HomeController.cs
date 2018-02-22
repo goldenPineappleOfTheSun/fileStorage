@@ -1,4 +1,5 @@
-﻿using Goldenpineappleofthesun.MVC.Models;
+﻿using Goldenpineappleofthesun.Database.Models;
+using Goldenpineappleofthesun.MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,11 @@ namespace Goldenpineappleofthesun.MVC.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult Index(LoginModel model)
-        {
-            return View();
+            var user = DBHelper.GetUserByLogin(User.Identity.Name);
+            var files = DBHelper.GetAllUserDocuments(user);
+            return View(files);
         }
     }
 }

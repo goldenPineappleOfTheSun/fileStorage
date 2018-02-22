@@ -117,12 +117,40 @@ namespace Goldenpineappleofthesun.MVC
         }
 
         /// <summary>
+        /// получить список документов пользователя
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public static IEnumerable<DocumentItem> GetAllUserDocuments(UserItem user)
+        {
+            return Documents.GetAllUserDocuments(user);
+        }
+
+        /// <summary>
+        /// Удалить документ
+        /// </summary>
+        /// <param name="dov"></param>
+        public static void DeleteDocument(DocumentItem doc)
+        {
+            DeleteDocument(doc.Id);
+        }
+
+        /// <summary>
+        /// Удалить документ
+        /// </summary>
+        /// <param name="id"></param>
+        public static void DeleteDocument(long id)
+        {
+            Documents.Delete(id);
+        }
+
+        /// <summary>
         /// Найти документ по автору и названию
         /// </summary>
         /// <param name="login"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        internal static object GetUserDocument(string login, string name)
+        public static DocumentItem GetUserDocument(string login, string name)
         {
             return Documents.GetUserDocument(DBHelper.GetUserByLogin(login), name);
         }

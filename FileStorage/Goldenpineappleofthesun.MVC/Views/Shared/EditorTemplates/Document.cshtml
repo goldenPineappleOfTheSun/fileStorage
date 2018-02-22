@@ -1,0 +1,25 @@
+﻿@model Goldenpineappleofthesun.Database.Models.DocumentItem
+
+@{ 
+    string path = Model.FileName.Replace("\\", "/");
+}
+
+<div class="document">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="document-name">@(Model.Name)</div>
+            <div class="document-author">@(Model.Author.Login)</div>
+            <div class="document-date">@(Model.CreationDate)</div>
+        </div>
+        <div class="col-md-1">
+            <div class="document-link" onclick="openFile('@(path)')">
+                ссылка
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="document-del" onclick="deleteDocument($(this).parents('.document'), '@(Model.Author.Login)', '@(Model.Name)')">
+                удалить
+            </div>
+        </div>
+    </div>
+</div>
