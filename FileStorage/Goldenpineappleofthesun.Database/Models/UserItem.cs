@@ -19,6 +19,8 @@ namespace Goldenpineappleofthesun.Database.Models
         public virtual RoleItem Role { get; set; }
 
         public virtual UserStatus Status { get; set; }
+
+        public virtual ICollection<DocumentItem> Documents { get; set; }
     }
 
     public enum UserStatus

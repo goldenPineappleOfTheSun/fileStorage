@@ -6,9 +6,13 @@
 
 <div class="document">
     <div class="row">
-        <div class="col-md-10">
-            <div class="document-name">@(Model.Name)</div>
+        <div class="col-md-5">
+            <div class="document-name">@(Model.Name.Length <= 30 ?Model.Name : $"{Model.Name.Substring(0,27)} … {Model.Name.Substring(Model.Name.Length-4)}")</div>
+        </div>
+        <div class="col-md-2">
             <div class="document-author">@(Model.Author.Login)</div>
+        </div>
+        <div class="col-md-3">
             <div class="document-date">@(Model.CreationDate)</div>
         </div>
         <div class="col-md-1">

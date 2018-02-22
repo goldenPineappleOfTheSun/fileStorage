@@ -14,7 +14,14 @@ namespace Goldenpineappleofthesun.MVC.Controllers
         public ActionResult Index()
         {
             var user = DBHelper.GetUserByLogin(User.Identity.Name);
-            var files = DBHelper.GetAllUserDocuments(user);
+
+            // TODO: управляемая сортировка
+            // этим контроллером всегда пользуется один авторизированный пользователь,
+            // поэтому я не стал сортировать по автору
+            var files = DBHelper.GetAllUserDocuments(user)
+                .OrderBy(x => x.Name)
+                .OrderBy(x => x.CreationDate);
+
             return View(files);
         }
     }
