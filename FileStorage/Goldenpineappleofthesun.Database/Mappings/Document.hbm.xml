@@ -10,6 +10,7 @@
     <property name="Name"/>
     <property name="CreationDate"/>
     <property name="FileName"/>
+    <property name="Status" />
     
     <many-to-one name="Author" class="UserItem"/>
 

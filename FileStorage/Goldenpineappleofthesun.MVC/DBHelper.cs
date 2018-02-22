@@ -116,6 +116,47 @@ namespace Goldenpineappleofthesun.MVC
             Documents.Save(doc);
         }
 
+        /// <summary>
+        /// Найти документ по автору и названию
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal static object GetUserDocument(string login, string name)
+        {
+            return Documents.GetUserDocument(DBHelper.GetUserByLogin(login), name);
+        }
+
+
+        /// <summary>
+        /// Найти документ по автору и названию
+        /// </summary>
+        /// <param name="author"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal static object GetUserDocument(UserItem author, string name)
+        {
+            return Documents.GetUserDocument(author, name);
+        }
+
+        /// <summary>
+        /// назначить документу статус "Missed"
+        /// </summary>
+        /// <param name="doc"></param>
+        public static void MarkDocumentAsMissing(DocumentItem doc)
+        {
+            Documents.MarkAsMissed(doc.Id);
+        }
+
+        /// <summary>
+        /// назначить документу статус "Missed"
+        /// </summary>
+        /// <param name="doc"></param>
+        public static void MarkDocumentAsMissing(long id)
+        {
+            Documents.MarkAsMissed(id);
+        }
+
         #endregion
 
         #region Role
