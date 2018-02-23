@@ -206,10 +206,12 @@
     <Content Include="Views\Account\Registration.cshtml" />
     <Content Include="Views\File\Upload.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Document.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DocumentHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\" />
+    <Folder Include="Views\DocumentList\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

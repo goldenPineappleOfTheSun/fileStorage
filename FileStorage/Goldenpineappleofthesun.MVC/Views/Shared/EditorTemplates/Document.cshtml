@@ -1,7 +1,10 @@
 ﻿@model Goldenpineappleofthesun.Database.Models.DocumentItem
 
 @{ 
-    string path = Model.FileName.Replace("\\", "/");
+    var path = Model.FileName.Replace("\\", "/");
+    var year1970 = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
+    var date = Model.CreationDate.Subtract(year1970).TotalSeconds;
+    var days = Model.CreationDate.Date.Subtract(year1970).TotalSeconds;
 }
 
 <div class="document">
@@ -13,7 +16,7 @@
             <div class="document-author">@(Model.Author.Login)</div>
         </div>
         <div class="col-md-3">
-            <div class="document-date">@(Model.CreationDate)</div>
+            <div class="document-date" data-date="@(date)" data-day="@(days)">@(Model.CreationDate)</div>
         </div>
         <div class="col-md-1">
             <div class="document-link" onclick="openFile('@(path)')">

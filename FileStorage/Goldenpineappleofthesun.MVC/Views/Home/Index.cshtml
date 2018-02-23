@@ -1,5 +1,4 @@
-﻿@using Goldenpineappleofthesun.Database.Models;
-@model IEnumerable<DocumentItem>
+﻿@model IEnumerable<Goldenpineappleofthesun.Database.Models.DocumentItem>
 
 @{
     ViewBag.Title = "Home Page";
@@ -9,6 +8,30 @@
 <style>
     .jumbotron {
         background: #e2e6c1; 
+    }
+    .document-header {    
+        border-bottom: 1px solid #cacaca;
+        height: 30px;
+    }
+    .document-sort {
+        font-size: 13px;
+        color: #808080a6;
+        border: 1px solid #808080a6;
+        border-radius: 5px;
+        width: 24px;
+        height: 24px;
+        line-height: 20px;
+        text-align: center;
+        cursor: default;
+    }
+    .document-sort:hover {
+        color: #000;
+        border: 1px solid #000;
+    }
+    .document-sort.active {
+        color: #000000;
+        background: #ffffff;
+        border: 1px solid #808080;
     }
     .document {    
         border-bottom: 1px solid #cacaca;
@@ -90,10 +113,13 @@
                 <input id="submit-file" type="submit" value="Загрузить" style="display:none"/>
             }
 
-            @foreach (var item in docs)
-            {
-                @Html.EditorFor(m => item, "Document");
-            }
+            @Html.EditorFor(m => docs, "DocumentHeader")
+            <div id="document-list">
+                @foreach (var item in docs)
+                {
+                        @Html.EditorFor(m => item, "Document");
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -136,5 +162,159 @@
                 path: path
             }
         })
+    }
+</script>
+
+<script>
+    var listOptions = {
+        sortName: false,
+        sortAuthor: false,
+        sortDate: true
+    }
+
+    function sortNameCheck() {
+        listOptions.sortName = !listOptions.sortName;
+        updateDocumentList()
+    }
+
+    function sortAuthorCheck() {
+        listOptions.sortAuthor = !listOptions.sortAuthor;
+        updateDocumentList()
+    }
+
+    function sortDateCheck() {
+        listOptions.sortDate = !listOptions.sortDate;
+        updateDocumentList()
+    }
+
+    function sortDocuments() {
+        var list = quickSort($('.document').toArray(), compareDocuments);
+        updateDocumentList(list)
+    }
+
+    function updateDocumentList(list) {
+        if (listOptions.sortName)
+            $('#document-sort-name').addClass('active')
+        else
+            $('#document-sort-name').removeClass('active')
+
+        if (listOptions.sortAuthor)
+            $('#document-sort-author').addClass('active')
+        else
+            $('#document-sort-author').removeClass('active')
+
+        if (listOptions.sortDate)
+            $('#document-sort-date').addClass('active')
+        else
+            $('#document-sort-date').removeClass('active')
+
+        if (list) {
+            var doclist = document.createElement("div");
+            $(doclist).append(list);
+            $('#document-list').html('')
+            $('#document-list').append(list);
+        }
+
+    }
+
+    function quickSort(list, comparer, left, right) {
+
+        var pivot = list.length / 2 ^ 0;
+
+        if (list.length < 2)
+            return list;
+
+        var index;
+        if (list.length > 1) {
+            left = typeof left != "number" ? 0 : left;
+            right = typeof right != "number" ? list.length - 1 : right;
+            comparer = typeof comparer != "function" ? function (x,y) {return (x > y ? 1 : (x < y ? -1 : 0))} : comparer;
+
+            index = _qs_partition(list, comparer, left, right);
+            if (left < index - 1) {
+                quickSort(list, comparer, left, index - 1);
+            }
+            if (index < right) {
+                quickSort(list, comparer, index, right);
+            }
+        }
+
+        return list;
+    }
+
+    function _qs_partition(items, comparer, left, right) {
+        var pivot = items[Math.floor((right + left) / 2)],
+            i = left,
+            j = right;
+
+        while (i <= j) {
+            while (comparer(items[i], pivot) === -1) {
+                i++;
+            }
+            while (comparer(items[j], pivot) === 1) {
+                j--;
+            }
+            if (i <= j) {
+                _qs_swap(items, i, j);
+                i++;
+                j--;
+            }
+        }
+        return i;
+    }
+
+    function _qs_swap(items, firstIndex, secondIndex) {
+        const temp = items[firstIndex];
+        items[firstIndex] = items[secondIndex];
+        items[secondIndex] = temp;
+    }
+
+    function compareDocuments(d1, d2) {
+        var doc1 = [];
+        var doc2 = [];
+
+        // настраиваем поиск
+        // по автору
+        if (listOptions.sortAuthor) {
+            doc1.push($(d1).find('.document-author').html())
+            doc2.push($(d2).find('.document-author').html())
+        }
+        // по полной дате (только если нет сортировки по назв)
+        if (listOptions.sortDate && !listOptions.sortName) {
+            doc1.push($(d1).find('.document-date').attr('data-date'))
+            doc2.push($(d2).find('.document-date').attr('data-date'))
+        }
+        // по дню даты (если есть сортировка по назв)
+        if (listOptions.sortDate && listOptions.sortName) {
+            doc1.push($(d1).find('.document-date').attr('data-day'))
+            doc2.push($(d2).find('.document-date').attr('data-day'))
+        }
+        // по названию (проверяется всегда, всегда в конце)
+        if (listOptions.sortName || !listOptions.sortName) {
+            doc1.push($(d1).find('.document-name').html())
+            doc2.push($(d2).find('.document-name').html())
+        }
+
+        return compareObjects(doc1, doc2);
+    }
+
+    // сравнивает два документа,
+    // представленных в виде массива сравниваемых атрибутов
+    // не рекурсивно
+    function compareObjects(doc1, doc2) {
+        for (var i = 0; i < doc1.length; i++) {
+            if (typeof doc1 == 'string')
+                doc1 = doc1.toLowerCase();
+            if (typeof doc2 == 'string')
+                doc2 = doc2.toLowerCase();
+
+            if (doc2[i] === undefined)
+                return 0;
+            if (doc1[i] > doc2[i])
+                return 1;
+            if (doc1[i] < doc2[i])
+                return -1;
+        }
+        return 0;
     }
 </script>

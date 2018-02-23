@@ -10,6 +10,26 @@ namespace Goldenpineappleofthesun.Database.Repositories
     public class NHDocumentRepository : NHRepository<DocumentItem>
     {
 
+        public IEnumerable<DocumentItem> GetAllDocumentsOfUsers(IEnumerable<string> logins)
+        {
+            var session = NHHelper.GetCurrentSession();
+
+            return session
+                .QueryOver<DocumentItem>()
+                .And(i => logins.Any(j => i.Author.Login == j))
+                .List<DocumentItem>();
+        }
+
+        public IEnumerable<DocumentItem> GetAllDocumentsOfUsers(IEnumerable<UserItem> users)
+        {
+            var session = NHHelper.GetCurrentSession();
+
+            return session
+                .QueryOver<DocumentItem>()
+                .And(i => users.Any(j => i.Author.Id == j.Id))
+                .List<DocumentItem>();
+        }
+
         public IEnumerable<DocumentItem> GetAllUserDocuments(UserItem author)
         {
             var session = NHHelper.GetCurrentSession();

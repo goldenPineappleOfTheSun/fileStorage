@@ -145,6 +145,33 @@ namespace Goldenpineappleofthesun.MVC
         }
 
         /// <summary>
+        /// Получить все документы
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<DocumentItem> GetAllDocuments()
+        {
+            return Documents.GetAll();
+        }
+
+        /// <summary>
+        /// Получить все документы пользователей из списка
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<DocumentItem> GetAllDocumentsOfUsers(IEnumerable<string> users)
+        {
+            return Documents.GetAllDocumentsOfUsers(users);
+        }
+
+        /// <summary>
+        /// Получить все документы пользователей из списка
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<DocumentItem> GetAllDocumentsOfUsers(IEnumerable<UserItem> users)
+        {
+            return Documents.GetAllDocumentsOfUsers(users);
+        }
+
+        /// <summary>
         /// Найти документ по автору и названию
         /// </summary>
         /// <param name="login"></param>
