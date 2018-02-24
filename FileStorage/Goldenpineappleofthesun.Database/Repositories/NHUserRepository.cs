@@ -13,14 +13,21 @@ namespace Goldenpineappleofthesun.Database.Repositories
 
         public void Save(UserItem item)
         {
-            var session = NHHelper.GetCurrentSession();
-            var result = session
-                .CreateSQLQuery("EXEC CreateUser  @Login=:Login, @Password=:Password, @Name=:Name, @Role=:Role")
-                .SetString("Login", item.Login)
-                .SetString("Password", item.Password)
-                .SetString("Name", item.Name)
-                .SetInt64("Role", item.Role.Id)
-                .ExecuteUpdate();
+            if (item.Id == 0)
+            {
+                var session = NHHelper.GetCurrentSession();
+                var result = session
+                    .CreateSQLQuery("EXEC CreateUser  @Login=:Login, @Password=:Password, @Name=:Name, @Role=:Role")
+                    .SetString("Login", item.Login)
+                    .SetString("Password", item.Password)
+                    .SetString("Name", item.Name)
+                    .SetInt64("Role", item.Role.Id)
+                    .ExecuteUpdate();
+            }
+            else
+            {
+                base.Save(item);
+            }
         }
 
         public UserItem GetByLogin(string login)

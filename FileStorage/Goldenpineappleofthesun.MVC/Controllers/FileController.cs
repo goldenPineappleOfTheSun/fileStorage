@@ -46,8 +46,16 @@ namespace Goldenpineappleofthesun.MVC.Controllers
 
         // GET: File
         [HttpPost]
-        public ActionResult Open(string path)
+        public ActionResult Open(string path, long id)
         {
+            if (!System.IO.File.Exists(path))
+            {
+                var file = DBHelper.GetDocument(id);
+                DBHelper.MarkDocumentAsMissed(file);
+                return View();
+            }
+
+
             System.Diagnostics.Process.Start(path);
 
             return View();

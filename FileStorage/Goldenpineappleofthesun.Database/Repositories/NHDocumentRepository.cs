@@ -52,22 +52,29 @@ namespace Goldenpineappleofthesun.Database.Repositories
 
         public void Save(DocumentItem item)
         {
-            var session = NHHelper.GetCurrentSession();
-            var result = session
-                .CreateSQLQuery("EXEC CreateDocument  @Name=:Name, @Date=:Date, @Author=:Author, @FileName=:FileName")
-                .SetParameter("Name", item.Name)
-                .SetParameter("Date", item.CreationDate)
-                .SetParameter("Author", item.Author.Id)
-                .SetParameter("FileName", item.FileName)
-                .ExecuteUpdate();
+            if (item.Id == 0)
+            {
+                var session = NHHelper.GetCurrentSession();
+                var result = session
+                    .CreateSQLQuery("EXEC CreateDocument  @Name=:Name, @Date=:Date, @Author=:Author, @FileName=:FileName")
+                    .SetParameter("Name", item.Name)
+                    .SetParameter("Date", item.CreationDate)
+                    .SetParameter("Author", item.Author.Id)
+                    .SetParameter("FileName", item.FileName)
+                    .ExecuteUpdate();
+            }
+            else
+            {
+                base.Save(item);
+            }
         }
 
-        public void MarkAsMissed(long id)
+        public void MarkAs(long id, DocumentStatus status)
         {
             var doc = Find(id);
             if (doc != null)
             {
-                doc.Status = DocumentStatus.Missed;
+                doc.Status = status;
                 Save(doc);
             }
         }

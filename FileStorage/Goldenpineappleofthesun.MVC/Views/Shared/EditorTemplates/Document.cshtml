@@ -21,7 +21,7 @@
         @if (Model.Status == Goldenpineappleofthesun.Database.Models.DocumentStatus.Normal)
         {
             <div class="col-md-1">
-                <div class="document-link" onclick="openFile('@(path)')">
+                <div class="document-link" onclick="openFile('@(path)', @(Model.Id))">
                     <div class="document-link-button a-small-button">ссылка</div>
                 </div>
             </div>

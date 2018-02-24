@@ -92,7 +92,7 @@
     .document-search {
         position: absolute;
         right: 12px;
-        top: 0px;
+        top: -5px;
         width: 75px;
         height: 25px;
         margin: 0;
@@ -220,7 +220,7 @@
 @Scripts.Render("~/bundles/jquery")
 
 <script>
-    /*** нажатие на кнопку "Загрузить файл" ***/
+    // нажатие на кнопку "Загрузить файл"
     $('#load-file').on('change', function (event) {
         var file = this.files[0];
         var reader = new FileReader();
@@ -233,8 +233,11 @@
         }
     })
 
-    /*** удалить файл ***/
+    // удалить файл
     function deleteDocument(element, login, name) {
+        if (!confirm("Вы точно хотите удалить этот файл?"))
+            return;
+
         $(element).remove();
         $.ajax({
             url: "@(Url.Action("Delete", "File"))",
@@ -246,13 +249,14 @@
         })
     }
 
-    /*** открыть файл ***/
-    function openFile(path) {
+    // открыть файл
+    function openFile(path, id) {
         $.ajax({
             url: "@(Url.Action("Open", "File"))",
             method: "POST",
             data: {
-                path: path
+                path: path,
+                id: id
             }
         })
     }

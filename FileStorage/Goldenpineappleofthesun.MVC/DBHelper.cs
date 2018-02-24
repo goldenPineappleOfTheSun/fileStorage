@@ -117,6 +117,16 @@ namespace Goldenpineappleofthesun.MVC
         }
 
         /// <summary>
+        /// получить документ по ид
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public static DocumentItem GetDocument(long id)
+        {
+            return Documents.Find(id);
+        }
+
+        /// <summary>
         /// получить список документов пользователя
         /// </summary>
         /// <param name="user"></param>
@@ -198,18 +208,36 @@ namespace Goldenpineappleofthesun.MVC
         /// назначить документу статус "Missed"
         /// </summary>
         /// <param name="doc"></param>
-        public static void MarkDocumentAsMissing(DocumentItem doc)
+        public static void MarkDocumentAsMissed(DocumentItem doc)
         {
-            Documents.MarkAsMissed(doc.Id);
+            Documents.MarkAs(doc.Id, DocumentStatus.Missed);
         }
 
         /// <summary>
         /// назначить документу статус "Missed"
         /// </summary>
         /// <param name="doc"></param>
-        public static void MarkDocumentAsMissing(long id)
+        public static void MarkDocumentAsMissed(long id)
         {
-            Documents.MarkAsMissed(id);
+            Documents.MarkAs(id, DocumentStatus.Missed);
+        }
+
+        /// <summary>
+        /// назначить документу статус "Normal"
+        /// </summary>
+        /// <param name="doc"></param>
+        public static void MarkDocumentAsNormal(DocumentItem doc)
+        {
+            Documents.MarkAs(doc.Id, DocumentStatus.Normal);
+        }
+
+        /// <summary>
+        /// назначить документу статус "Normal"
+        /// </summary>
+        /// <param name="doc"></param>
+        public static void MarkDocumentAsNormal(long id)
+        {
+            Documents.MarkAs(id, DocumentStatus.Normal);
         }
 
         #endregion
