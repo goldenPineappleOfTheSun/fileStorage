@@ -1,0 +1,32 @@
+﻿@model Goldenpineappleofthesun.Database.Models.DocumentItem
+
+@{ 
+    var path = Model.FileName.Replace("\\", "/");
+    var year1970 = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
+    var date = Model.CreationDate.Subtract(year1970).TotalSeconds;
+    var days = Model.CreationDate.Date.Subtract(year1970).TotalSeconds;
+}
+
+<div class="document">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="document-name">@(Model.Name.Length <= 30 ?Model.Name : $"{Model.Name.Substring(0,27)} … {Model.Name.Substring(Model.Name.Length-4)}")</div>
+        </div>
+        <div class="col-md-2">
+            <div class="document-author">@(Model.Author.Login)</div>
+        </div>
+        <div class="col-md-3">
+            <div class="document-date" data-date="@(date)" data-day="@(days)">@(Model.CreationDate)</div>
+        </div>
+        <div class="col-md-1">
+            <div class="document-link" onclick="openFile('@(path)')">
+                ссылка
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="document-del" onclick="deleteDocument($(this).parents('.document'), '@(Model.Author.Login)', '@(Model.Name)')">
+                удалить
+            </div>
+        </div>
+    </div>
+</div>

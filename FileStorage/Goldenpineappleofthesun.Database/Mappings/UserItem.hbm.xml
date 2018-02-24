@@ -14,6 +14,11 @@
 
     <many-to-one name="Role" class="RoleItem"/>
 
+    <set name="Documents" inverse="true" lazy="true">
+      <key column="Author"/>
+      <one-to-many class="DocumentItem"/>
+    </set>
+
   </class>
 
 </hibernate-mapping>

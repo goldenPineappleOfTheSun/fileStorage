@@ -116,6 +116,102 @@ namespace Goldenpineappleofthesun.MVC
             Documents.Save(doc);
         }
 
+        /// <summary>
+        /// получить список документов пользователя
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public static IEnumerable<DocumentItem> GetAllUserDocuments(UserItem user)
+        {
+            return Documents.GetAllUserDocuments(user);
+        }
+
+        /// <summary>
+        /// Удалить документ
+        /// </summary>
+        /// <param name="dov"></param>
+        public static void DeleteDocument(DocumentItem doc)
+        {
+            DeleteDocument(doc.Id);
+        }
+
+        /// <summary>
+        /// Удалить документ
+        /// </summary>
+        /// <param name="id"></param>
+        public static void DeleteDocument(long id)
+        {
+            Documents.Delete(id);
+        }
+
+        /// <summary>
+        /// Получить все документы
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<DocumentItem> GetAllDocuments()
+        {
+            return Documents.GetAll();
+        }
+
+        /// <summary>
+        /// Получить все документы пользователей из списка
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<DocumentItem> GetAllDocumentsOfUsers(IEnumerable<string> users)
+        {
+            return Documents.GetAllDocumentsOfUsers(users);
+        }
+
+        /// <summary>
+        /// Получить все документы пользователей из списка
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<DocumentItem> GetAllDocumentsOfUsers(IEnumerable<UserItem> users)
+        {
+            return Documents.GetAllDocumentsOfUsers(users);
+        }
+
+        /// <summary>
+        /// Найти документ по автору и названию
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static DocumentItem GetUserDocument(string login, string name)
+        {
+            return Documents.GetUserDocument(DBHelper.GetUserByLogin(login), name);
+        }
+
+
+        /// <summary>
+        /// Найти документ по автору и названию
+        /// </summary>
+        /// <param name="author"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal static object GetUserDocument(UserItem author, string name)
+        {
+            return Documents.GetUserDocument(author, name);
+        }
+
+        /// <summary>
+        /// назначить документу статус "Missed"
+        /// </summary>
+        /// <param name="doc"></param>
+        public static void MarkDocumentAsMissing(DocumentItem doc)
+        {
+            Documents.MarkAsMissed(doc.Id);
+        }
+
+        /// <summary>
+        /// назначить документу статус "Missed"
+        /// </summary>
+        /// <param name="doc"></param>
+        public static void MarkDocumentAsMissing(long id)
+        {
+            Documents.MarkAsMissed(id);
+        }
+
         #endregion
 
         #region Role

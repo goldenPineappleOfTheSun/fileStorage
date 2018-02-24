@@ -1,4 +1,5 @@
-﻿using Goldenpineappleofthesun.MVC.Models;
+﻿using Goldenpineappleofthesun.Database.Models;
+using Goldenpineappleofthesun.MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,17 @@ namespace Goldenpineappleofthesun.MVC.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        [AllowAnonymous]
         public ActionResult Index()
         {
-            return View();
-        }
+            var user = DBHelper.GetUserByLogin(User.Identity.Name);
+            
+            // этим контроллером всегда пользуется один авторизированный пользователь,
+            // поэтому я не стал сортировать по автору
+            var files = DBHelper.GetAllUserDocuments(user)
+                .OrderBy(x => x.Name)
+                .ThenBy(x => x.CreationDate);
 
-        [HttpPost]
-        [AllowAnonymous]
-        public ActionResult Index(LoginModel model)
-        {
-            return View();
+            return View(files);
         }
     }
 }

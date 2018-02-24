@@ -1,31 +1,384 @@
-﻿@{
+﻿@model IEnumerable<Goldenpineappleofthesun.Database.Models.DocumentItem>
+
+@{
     ViewBag.Title = "Home Page";
+    var docs = Model;
 }
 
+<style>
+    .jumbotron {
+        background: #e2e6c1; 
+    }
+    .document-header {    
+        border-bottom: 1px solid #cacaca;
+        height: 30px;
+        margin: 10px 0 20px;
+    }
+    .document-sort {
+        font-size: 13px;
+        color: #808080a6;
+        border: 1px solid #808080a6;
+        border-radius: 5px;
+        width: 24px;
+        height: 24px;
+        line-height: 20px;
+        text-align: center;
+        cursor: default;
+    }
+    .document-sort:hover {
+        color: #000;
+        border: 1px solid #000;
+    }
+    .document-sort.active {
+        color: #000000;
+        background: #ffffff;
+        border: 1px solid #808080;
+    }
+    .document-search {
+        position: absolute;
+        right: 12px;
+        top: 0px;
+        width: 75px;
+        height: 25px;
+        margin: 0;
+        padding-right: 15px;
+        font-size: 15px;
+        text-align: right;
+    }
+    .document-search:focus {
+        width: 100%;
+    }
+    .document {    
+        border-bottom: 1px solid #cacaca;
+        height: 50px;
+    }
+    .document-name {
+        display: inline-block;
+        font-size: 18px;
+    }
+    .document-author {
+        display: inline-block;    
+        height: 20px;
+        line-height: 20px;
+        font-size: 0.8em;
+    }
+    .document-author:before {
+        content: 'автор: ';
+        font-size: 10px;
+    }
+    .document-date {
+        display: inline-block;
+        height: 20px;
+        line-height: 20px;
+        font-size: 0.6em;
+    }
+    .document-date:before {
+        content: 'создан: ';
+        font-size: 10px;
+    }
+    .document-link {
+        height: 50px;
+        color: #5c5cb3;
+        font-size: 0.7em;
+        line-height: 50px;
+        font-style: italic;
+        cursor: default;
+    }
+    .document-link:hover {
+        color: #0f2ae8;
+        border-bottom: 2px solid #0f2ae8;
+    }
+    .document-del {
+        height: 50px;
+        color: #ef5252;
+        font-size: 0.7em;
+        line-height: 50px;
+        font-style: italic;
+        cursor: default;
+    }
+    .document-del:hover {    
+        color: #ff0101;
+        border-bottom: 2px solid red;
+    }
+    .upload-button {    
+        margin: 32px 0 16px 0;
+        padding: 4px 12px;
+        border: 1px solid #928d8d;
+        border-bottom: 3px solid #928d8d;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+</style>
+
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>Файловое хранилище</h1>
+
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data", @class = "upload-form"}))
+            {
+                <input type="button" onclick="$('#load-file')[0].click()" value="Загрузить новый файл" class="upload-button"/>
+                <input id="load-file" type="file" name="upload" style="display:none"/>
+                <input id="submit-file" type="submit" value="Загрузить" style="display:none"/>
+            }
+
+            @Html.EditorFor(m => docs, "DocumentHeader")
+            <div id="document-list">
+                @foreach (var item in docs)
+                {
+                        @Html.EditorFor(m => item, "Document");
+                }
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    /*** нажатие на кнопку "Загрузить файл" ***/
+    $('#load-file').on('change', function (event) {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.readAsDataURL(file);
+
+        // как только фото загружено
+        reader.onload = function (event) {
+            $('#submit-file').click();
+        }
+    })
+
+    /*** удалить файл ***/
+    function deleteDocument(element, login, name) {
+        $(element).remove();
+        $.ajax({
+            url: "@(Url.Action("Delete", "File"))",
+            method: "POST",
+            data: {
+                login: login,
+                name: name
+            }
+        })
+    }
+
+    /*** открыть файл ***/
+    function openFile(path) {
+        $.ajax({
+            url: "@(Url.Action("Open", "File"))",
+            method: "POST",
+            data: {
+                path: path
+            }
+        })
+    }
+</script>
+
+<script>
+    var listOptions = {
+        sortName: false,
+        sortAuthor: false,
+        sortDate: true,
+        search: '',
+        timer: 0
+    }
+
+    // search timer
+    setInterval(function () {
+        if (listOptions.timer > 0)
+            listOptions.timer--;
+        if (listOptions.timer === 1)
+            filterDosuments();
+    }, 100)
+
+    /* #Обработчики */
+
+    $('.document-search').on('keyup change', function (event) {
+        listOptions.search = event.target.value.toLowerCase();
+        listOptions.timer = 5;
+    })
+
+    /* # Сортировка и поиск */
+
+    // вкл/выкл сортировку
+    function sortNameCheck() {
+        listOptions.sortName = !listOptions.sortName;
+        updateDocumentList()
+        sortDocuments()
+    }
+
+    // вкл/выкл сортировку
+    function sortAuthorCheck() {
+        listOptions.sortAuthor = !listOptions.sortAuthor;
+        updateDocumentList()
+        sortDocuments()
+    }
+
+    // вкл/выкл сортировку
+    function sortDateCheck() {
+        listOptions.sortDate = !listOptions.sortDate;
+        updateDocumentList()
+        sortDocuments()
+    }
+
+    // сортировать
+    function sortDocuments() {
+        var list = quickSort($('.document').toArray(), compareDocuments);
+        updateDocumentList(list)
+    }
+
+    // фильтровать (поиск)
+    function filterDosuments(filter) {
+        var filter = filter || listOptions.search;
+        var list = $('.document').toArray();
+
+        console.log(filter)
+
+        // display none если не отфильтровано
+        // display block если отфильтровано
+        for (var i=0; i<list.length; i++){
+            var name = $(list[i]).find('.document-name');
+
+            if (name && (name.html().toLowerCase().indexOf(filter) !== -1 || !filter))
+                $(list[i]).css('display', 'block');
+            else
+                $(list[i]).css('display', 'none');
+        }
+    }
+
+    // обновить классы
+    // обновить список
+    function updateDocumentList(list) {
+        if (listOptions.sortName)
+            $('#document-sort-name').addClass('active')
+        else
+            $('#document-sort-name').removeClass('active')
+
+        if (listOptions.sortAuthor)
+            $('#document-sort-author').addClass('active')
+        else
+            $('#document-sort-author').removeClass('active')
+
+        if (listOptions.sortDate)
+            $('#document-sort-date').addClass('active')
+        else
+            $('#document-sort-date').removeClass('active')
+
+        if (list) {
+            var doclist = document.createElement("div");
+            $(doclist).append(list);
+            $('#document-list').html('')
+            $('#document-list').append(list);
+        }
+
+    }
+
+    /* #Quick sort */
+
+    // быстрая сортировка 
+    function quickSort(list, comparer, left, right) {
+
+        var pivot = list.length / 2 ^ 0;
+
+        if (list.length < 2)
+            return list;
+
+        var index;
+        if (list.length > 1) {
+            left = typeof left != "number" ? 0 : left;
+            right = typeof right != "number" ? list.length - 1 : right;
+            comparer = typeof comparer != "function" ? function (x,y) {return (x > y ? 1 : (x < y ? -1 : 0))} : comparer;
+
+            index = _qs_partition(list, comparer, left, right);
+            if (left < index - 1) {
+                quickSort(list, comparer, left, index - 1);
+            }
+            if (index < right) {
+                quickSort(list, comparer, index, right);
+            }
+        }
+
+        return list;
+    }
+
+    function _qs_partition(items, comparer, left, right) {
+        var pivot = items[Math.floor((right + left) / 2)],
+            i = left,
+            j = right;
+
+        while (i <= j) {
+            while (comparer(items[i], pivot) === -1) {
+                i++;
+            }
+            while (comparer(items[j], pivot) === 1) {
+                j--;
+            }
+            if (i <= j) {
+                _qs_swap(items, i, j);
+                i++;
+                j--;
+            }
+        }
+        return i;
+    }
+
+    function _qs_swap(items, firstIndex, secondIndex) {
+        const temp = items[firstIndex];
+        items[firstIndex] = items[secondIndex];
+        items[secondIndex] = temp;
+    }
+
+    /* #Функции-компараторы */
+
+    // функция, которая сравнивает два div.document элемента
+    // у них должны быть дети с классами: document-author, document-name, document-date
+    // настройк сортировки (на данный момент) берутся из глобального объекта listOptions
+    function compareDocuments(d1, d2) {
+        var doc1 = [];
+        var doc2 = [];
+
+        // настраиваем поиск
+        // по автору
+        if (listOptions.sortAuthor) {
+            doc1.push($(d1).find('.document-author').html())
+            doc2.push($(d2).find('.document-author').html())
+        }
+        // по полной дате (только если нет сортировки по назв)
+        if (listOptions.sortDate && !listOptions.sortName) {
+            doc1.push($(d1).find('.document-date').attr('data-date'))
+            doc2.push($(d2).find('.document-date').attr('data-date'))
+        }
+        // по дню даты (если есть сортировка по назв)
+        if (listOptions.sortDate && listOptions.sortName) {
+            doc1.push($(d1).find('.document-date').attr('data-day'))
+            doc2.push($(d2).find('.document-date').attr('data-day'))
+        }
+        // по названию (проверяется всегда, всегда в конце)
+        if (listOptions.sortName || !listOptions.sortName) {
+            doc1.push($(d1).find('.document-name').html())
+            doc2.push($(d2).find('.document-name').html())
+        }
+
+        return compareObjects(doc1, doc2);
+    }
+
+    // сравнивает два документа,
+    // представленных в виде массива сравниваемых атрибутов (строк, чисел, дат)
+    // не рекурсивно
+    function compareObjects(doc1, doc2) {
+        for (var i = 0; i < doc1.length; i++) {
+            if (typeof doc1 == 'string')
+                doc1 = doc1.toLowerCase();
+            if (typeof doc2 == 'string')
+                doc2 = doc2.toLowerCase();
+
+            if (doc2[i] === undefined)
+                return 0;
+            if (doc1[i] > doc2[i])
+                return 1;
+            if (doc1[i] < doc2[i])
+                return -1;
+        }
+        return 0;
+    }
+</script>

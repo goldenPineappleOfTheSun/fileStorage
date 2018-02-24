@@ -17,5 +17,13 @@ namespace Goldenpineappleofthesun.Database.Models
         public virtual UserItem Author { get; set; }
 
         public virtual string FileName { get; set; }
+
+        public virtual DocumentStatus Status { get; set; }
+    }
+
+    public enum DocumentStatus
+    {
+        Missed = 0,
+        Normal = 1,
     }
 }
