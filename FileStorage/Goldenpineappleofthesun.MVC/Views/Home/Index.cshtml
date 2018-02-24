@@ -12,6 +12,7 @@
     .document-header {    
         border-bottom: 1px solid #cacaca;
         height: 30px;
+        margin: 10px 0 20px;
     }
     .document-sort {
         font-size: 13px;
@@ -33,6 +34,20 @@
         background: #ffffff;
         border: 1px solid #808080;
     }
+    .document-search {
+        position: absolute;
+        right: 12px;
+        top: 0px;
+        width: 75px;
+        height: 25px;
+        margin: 0;
+        padding-right: 15px;
+        font-size: 15px;
+        text-align: right;
+    }
+    .document-search:focus {
+        width: 100%;
+    }
     .document {    
         border-bottom: 1px solid #cacaca;
         height: 50px;
@@ -46,9 +61,6 @@
         height: 20px;
         line-height: 20px;
         font-size: 0.8em;
-        /*background: #aad080;
-        border-radius: 6px;
-        padding: 0 8px;*/
     }
     .document-author:before {
         content: 'автор: ';
@@ -59,15 +71,12 @@
         height: 20px;
         line-height: 20px;
         font-size: 0.6em;
-        /*background: #80d0d0;
-        border-radius: 6px;
-        padding: 0 8px;*/
     }
     .document-date:before {
         content: 'создан: ';
         font-size: 10px;
     }
-    .document-link {   
+    .document-link {
         height: 50px;
         color: #5c5cb3;
         font-size: 0.7em;
@@ -75,7 +84,7 @@
         font-style: italic;
         cursor: default;
     }
-    .document-link:hover {    
+    .document-link:hover {
         color: #0f2ae8;
         border-bottom: 2px solid #0f2ae8;
     }
@@ -169,29 +178,76 @@
     var listOptions = {
         sortName: false,
         sortAuthor: false,
-        sortDate: true
+        sortDate: true,
+        search: '',
+        timer: 0
     }
 
+    // search timer
+    setInterval(function () {
+        if (listOptions.timer > 0)
+            listOptions.timer--;
+        if (listOptions.timer === 1)
+            filterDosuments();
+    }, 100)
+
+    /* #Обработчики */
+
+    $('.document-search').on('keyup change', function (event) {
+        listOptions.search = event.target.value.toLowerCase();
+        listOptions.timer = 5;
+    })
+
+    /* # Сортировка и поиск */
+
+    // вкл/выкл сортировку
     function sortNameCheck() {
         listOptions.sortName = !listOptions.sortName;
         updateDocumentList()
+        sortDocuments()
     }
 
+    // вкл/выкл сортировку
     function sortAuthorCheck() {
         listOptions.sortAuthor = !listOptions.sortAuthor;
         updateDocumentList()
+        sortDocuments()
     }
 
+    // вкл/выкл сортировку
     function sortDateCheck() {
         listOptions.sortDate = !listOptions.sortDate;
         updateDocumentList()
+        sortDocuments()
     }
 
+    // сортировать
     function sortDocuments() {
         var list = quickSort($('.document').toArray(), compareDocuments);
         updateDocumentList(list)
     }
 
+    // фильтровать (поиск)
+    function filterDosuments(filter) {
+        var filter = filter || listOptions.search;
+        var list = $('.document').toArray();
+
+        console.log(filter)
+
+        // display none если не отфильтровано
+        // display block если отфильтровано
+        for (var i=0; i<list.length; i++){
+            var name = $(list[i]).find('.document-name');
+
+            if (name && (name.html().toLowerCase().indexOf(filter) !== -1 || !filter))
+                $(list[i]).css('display', 'block');
+            else
+                $(list[i]).css('display', 'none');
+        }
+    }
+
+    // обновить классы
+    // обновить список
     function updateDocumentList(list) {
         if (listOptions.sortName)
             $('#document-sort-name').addClass('active')
@@ -217,6 +273,9 @@
 
     }
 
+    /* #Quick sort */
+
+    // быстрая сортировка 
     function quickSort(list, comparer, left, right) {
 
         var pivot = list.length / 2 ^ 0;
@@ -269,6 +328,11 @@
         items[secondIndex] = temp;
     }
 
+    /* #Функции-компараторы */
+
+    // функция, которая сравнивает два div.document элемента
+    // у них должны быть дети с классами: document-author, document-name, document-date
+    // настройк сортировки (на данный момент) берутся из глобального объекта listOptions
     function compareDocuments(d1, d2) {
         var doc1 = [];
         var doc2 = [];
@@ -299,7 +363,7 @@
     }
 
     // сравнивает два документа,
-    // представленных в виде массива сравниваемых атрибутов
+    // представленных в виде массива сравниваемых атрибутов (строк, чисел, дат)
     // не рекурсивно
     function compareObjects(doc1, doc2) {
         for (var i = 0; i < doc1.length; i++) {
