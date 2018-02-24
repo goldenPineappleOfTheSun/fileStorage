@@ -199,8 +199,9 @@
 <div class="jumbotron">
     <div class="row">
         <div class="col-md-12">
-            @using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data", @class = "upload-form"}))
+            @using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data", @class = "upload-form" }))
             {
+                @Html.AntiForgeryToken()
                 <input type="button" onclick="$('#load-file')[0].click()" value="Загрузить новый файл" class="upload-button a-button"/>
                 <input id="load-file" type="file" name="upload" style="display:none"/>
                 <input id="submit-file" type="submit" value="Загрузить" style="display:none"/>

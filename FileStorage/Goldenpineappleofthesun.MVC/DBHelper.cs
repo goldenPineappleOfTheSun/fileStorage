@@ -20,6 +20,7 @@ namespace Goldenpineappleofthesun.MVC
 
         #region User
 
+        // TODO: закешить юзера
         public static UserItem GetUserByLogin(string login)
         {
             return Users.GetByLogin(login);
