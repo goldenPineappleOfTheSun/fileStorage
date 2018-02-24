@@ -5,9 +5,63 @@
     var docs = Model;
 }
 
+<link rel="stylesheet" href="../files/fonts.css">
 <style>
-    .jumbotron {
+    html {
+        font-family: montserrat;
+        font-size: 14px;
+    }
+    body {
+        background: #388a43;
+    }
+    .jumbotron {    
+        margin-top: 30px;
         background: #e2e6c1; 
+    }
+    .a-button,
+    .a-small-button {
+        box-sizing: border-box;
+        border: 1px solid #928d8d;
+        border-bottom: 3px solid #928d8d;
+        border-radius: 5px;
+        text-align: center;
+    }
+    .a-button:hover,
+    .a-small-button:hover {
+        border-bottom-width: 4px;
+        transform: translateY(-2px);
+    }
+    .a-button:active,
+    .a-small-button:active {
+        border-bottom-width: 1px;
+        transform: translateY(1px);
+    }
+    .a-button {
+        height: 40px;
+        font-size: 0.9rem;
+        line-height: 28px;
+    }
+    .a-small-button {
+        height: 30px;
+        line-height: 27px;
+        font-family: cormorantgaramond;
+        font-size: 0.9rem;
+        font-style: italic;
+        font-weight: bold;
+        color: #333333;
+    }
+    .a-button:hover {
+       height: 42px;
+       margin-bottom: -2px;
+    }
+    .a-small-button:hover {
+        height: 32px;
+    }
+    .a-button:active {
+        height: 39px;
+    }
+    .a-small-button:active {
+        height: 29px;
     }
     .document-header {    
         border-bottom: 1px solid #cacaca;
@@ -15,15 +69,16 @@
         margin: 10px 0 20px;
     }
     .document-sort {
-        font-size: 13px;
+        font-size: 0.8rem;
         color: #808080a6;
         border: 1px solid #808080a6;
         border-radius: 5px;
         width: 24px;
-        height: 24px;
-        line-height: 20px;
+        height: 20px;
+        line-height: 15px;
         text-align: center;
         cursor: default;
+        transition: background-color 0.2s ease-out;
     }
     .document-sort:hover {
         color: #000;
@@ -42,8 +97,11 @@
         height: 25px;
         margin: 0;
         padding-right: 15px;
-        font-size: 15px;
-        text-align: right;
+        font-size: 1rem;
+        text-align: right;    
+        border-radius: 3px;
+        border: none;
+        transition: width 0.2s ease-out;
     }
     .document-search:focus {
         width: 100%;
@@ -54,13 +112,13 @@
     }
     .document-name {
         display: inline-block;
-        font-size: 18px;
+        font-size: 1.1rem;
     }
     .document-author {
         display: inline-block;    
         height: 20px;
         line-height: 20px;
-        font-size: 0.8em;
+        font-size: 0.8rem;
     }
     .document-author:before {
         content: 'автор: ';
@@ -70,7 +128,7 @@
         display: inline-block;
         height: 20px;
         line-height: 20px;
-        font-size: 0.6em;
+        font-size: 0.8rem;
     }
     .document-date:before {
         content: 'создан: ';
@@ -78,46 +136,72 @@
     }
     .document-link {
         height: 50px;
-        color: #5c5cb3;
-        font-size: 0.7em;
+        color: #333333;
+        font-size: 0.8rem;
         line-height: 50px;
         font-style: italic;
         cursor: default;
     }
-    .document-link:hover {
-        color: #0f2ae8;
-        border-bottom: 2px solid #0f2ae8;
+    .document-link-button {
+        position: relative;
+        width: 100%;
+        top: 10px;
+    }
+    .document-link-button:hover {
+        color: #0064ff;    
+        border-color: #0064ff;
     }
     .document-del {
         height: 50px;
-        color: #ef5252;
-        font-size: 0.7em;
+        color: #333333;
+        font-size: 0.8rem;
         line-height: 50px;
         font-style: italic;
         cursor: default;
     }
-    .document-del:hover {    
-        color: #ff0101;
-        border-bottom: 2px solid red;
+    .document-del-button {
+        position: relative;
+        width: 100%;
+        top: 10px;
+    }
+    .document-del-button:hover {
+        color: red;   
+        border-color: red;
     }
     .upload-button {    
-        margin: 32px 0 16px 0;
+        margin: 0px 0 16px 0;
         padding: 4px 12px;
         border: 1px solid #928d8d;
         border-bottom: 3px solid #928d8d;
         border-radius: 5px;
-        font-size: 13px;
+        background: none;
+        user-select: none;
+    }
+    .upload-button:hover {
+        color: #000000;
+        border-color: #000000;
+        margin-bottom: 14px; /* upload-button.hover - утолщение нижней границы */
+    }
+    .upload-button:active {
+        color: #000000;
+        border-color: #000000;
+        margin-bottom: 17px; /* upload-button.hover - утолщение нижней границы */
+    }
+    .document-missed {
+        line-height: 50px;
+        width: 100%;
+        text-align: center;
+        color: #ce6262;
+        font-size: 0.8rem;
     }
 </style>
 
 <div class="jumbotron">
-    <h1>Файловое хранилище</h1>
-
     <div class="row">
         <div class="col-md-12">
             @using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data", @class = "upload-form"}))
             {
-                <input type="button" onclick="$('#load-file')[0].click()" value="Загрузить новый файл" class="upload-button"/>
+                <input type="button" onclick="$('#load-file')[0].click()" value="Загрузить новый файл" class="upload-button a-button"/>
                 <input id="load-file" type="file" name="upload" style="display:none"/>
                 <input id="submit-file" type="submit" value="Загрузить" style="display:none"/>
             }
@@ -223,7 +307,7 @@
 
     // сортировать
     function sortDocuments() {
-        var list = quickSort($('.document').toArray(), compareDocuments);
+        var list = quickSort($('.document').toArray(), createDocumentComparator(listOptions));
         updateDocumentList(list)
     }
 
@@ -330,31 +414,38 @@
 
     /* #Функции-компараторы */
 
+    // функция, возвращающая функцию-компаратор(с определенным options)
+    function createDocumentComparator(options) {
+        return function(d1, d2){
+            return compareDocuments(d1, d2, options);
+        }
+    }
+
     // функция, которая сравнивает два div.document элемента
     // у них должны быть дети с классами: document-author, document-name, document-date
     // настройк сортировки (на данный момент) берутся из глобального объекта listOptions
-    function compareDocuments(d1, d2) {
+    function compareDocuments(d1, d2, options) {
         var doc1 = [];
         var doc2 = [];
 
         // настраиваем поиск
         // по автору
-        if (listOptions.sortAuthor) {
+        if (options.sortAuthor) {
             doc1.push($(d1).find('.document-author').html())
             doc2.push($(d2).find('.document-author').html())
         }
         // по полной дате (только если нет сортировки по назв)
-        if (listOptions.sortDate && !listOptions.sortName) {
+        if (options.sortDate && !options.sortName) {
             doc1.push($(d1).find('.document-date').attr('data-date'))
             doc2.push($(d2).find('.document-date').attr('data-date'))
         }
         // по дню даты (если есть сортировка по назв)
-        if (listOptions.sortDate && listOptions.sortName) {
+        if (options.sortDate && options.sortName) {
             doc1.push($(d1).find('.document-date').attr('data-day'))
             doc2.push($(d2).find('.document-date').attr('data-day'))
         }
         // по названию (проверяется всегда, всегда в конце)
-        if (listOptions.sortName || !listOptions.sortName) {
+        if (options.sortName || !options.sortName) {
             doc1.push($(d1).find('.document-name').html())
             doc2.push($(d2).find('.document-name').html())
         }
@@ -367,11 +458,13 @@
     // не рекурсивно
     function compareObjects(doc1, doc2) {
         for (var i = 0; i < doc1.length; i++) {
+            // нормализуем строки
             if (typeof doc1 == 'string')
                 doc1 = doc1.toLowerCase();
             if (typeof doc2 == 'string')
                 doc2 = doc2.toLowerCase();
 
+            // сравниваем
             if (doc2[i] === undefined)
                 return 0;
             if (doc1[i] > doc2[i])

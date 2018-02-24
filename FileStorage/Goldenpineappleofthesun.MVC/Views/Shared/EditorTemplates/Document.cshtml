@@ -18,15 +18,24 @@
         <div class="col-md-3">
             <div class="document-date" data-date="@(date)" data-day="@(days)">@(Model.CreationDate)</div>
         </div>
-        <div class="col-md-1">
-            <div class="document-link" onclick="openFile('@(path)')">
-                ссылка
+        @if (Model.Status == Goldenpineappleofthesun.Database.Models.DocumentStatus.Normal)
+        {
+            <div class="col-md-1">
+                <div class="document-link" onclick="openFile('@(path)')">
+                    <div class="document-link-button a-small-button">ссылка</div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-1">
-            <div class="document-del" onclick="deleteDocument($(this).parents('.document'), '@(Model.Author.Login)', '@(Model.Name)')">
-                удалить
+            <div class="col-md-1">
+                <div class="document-del" onclick="deleteDocument($(this).parents('.document'), '@(Model.Author.Login)', '@(Model.Name)')">
+                    <div class="document-del-button a-small-button">удалить</div>
+                </div>
             </div>
-        </div>
+        }
+        else if (Model.Status == Goldenpineappleofthesun.Database.Models.DocumentStatus.Missed)
+        {
+            <div class="col-md-2">
+                <div class="document-missed">не найден :(</div>
+            </div>
+        }
     </div>
 </div>

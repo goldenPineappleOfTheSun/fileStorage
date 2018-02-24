@@ -15,11 +15,10 @@ namespace Goldenpineappleofthesun.MVC.Controllers
         {
             var user = DBHelper.GetUserByLogin(User.Identity.Name);
             
-            // этим контроллером всегда пользуется один авторизированный пользователь,
-            // поэтому я не стал сортировать по автору
+            // предварительная сортровка
+            // основная сортировка находится во фронтенде 
             var files = DBHelper.GetAllUserDocuments(user)
-                .OrderBy(x => x.Name)
-                .ThenBy(x => x.CreationDate);
+                .OrderBy(x => x.Name);
 
             return View(files);
         }
