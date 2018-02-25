@@ -87,8 +87,12 @@ namespace Goldenpineappleofthesun.MVC.Controllers
         {
             // TODO: Status inst of actual removing 
             var smpl = DBHelper.GetSample(id);
+
             if (smpl != null)
+            {
+                System.IO.File.Delete(Server.MapPath($"~\\Samples\\{smpl.RelPath}"));
                 DBHelper.DeleteSample(smpl);
+            }
 
             return View();
         }

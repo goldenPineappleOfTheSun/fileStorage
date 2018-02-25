@@ -37,8 +37,12 @@ namespace Goldenpineappleofthesun.MVC.Controllers
         public ActionResult Delete(string login, string name)
         {
             var doc = DBHelper.GetUserDocument(login, name);
+
             if (doc != null)
+            {
+                System.IO.File.Delete(doc.FileName);
                 DBHelper.DeleteDocument(doc);
+            }
 
             return View();
         }
