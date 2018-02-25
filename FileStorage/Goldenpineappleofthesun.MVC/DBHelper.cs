@@ -9,9 +9,12 @@ namespace Goldenpineappleofthesun.MVC
 {
     public class DBHelper
     {
+        // TODO: рзделить н несколтько классов
+
         private static NHUserRepository Users = new NHUserRepository();
         private static NHDocumentRepository Documents = new NHDocumentRepository();
         private static NHRoleRepository Roles = new NHRoleRepository();
+        private static NHSampleRepository Samples = new NHSampleRepository();
 
         public DBHelper()
         {
@@ -248,6 +251,88 @@ namespace Goldenpineappleofthesun.MVC
         public static RoleItem GetRoleByName(string name)
         {
             return Roles.GetByName(name);
+        }
+
+        #endregion
+
+        #region Samples
+
+        /// <summary>
+        /// Добавить образец
+        /// </summary>
+        /// <param name="user"></param>
+        public static void AddSample(string title, string path)
+        {
+            var sample = new SampleItem();
+            sample.Id = 0;
+            sample.Title = title;
+            sample.RelPath = path;
+
+            Samples.Save(sample);
+        }
+
+        /// <summary>
+        /// Добавить образец
+        /// </summary>
+        /// <param name="user"></param>
+        public static void AddSample(SampleItem sample)
+        {
+            Samples.Save(sample);
+        }
+
+        /// <summary>
+        /// Удалить образец
+        /// </summary>
+        /// <param name="sample"></param>
+        public static void DeleteSample(SampleItem sample)
+        {
+            DeleteSample(sample.Id);
+        }
+
+        /// <summary>
+        /// Удалить образец
+        /// </summary>
+        /// <param name="id"></param>
+        public static void DeleteSample(long id)
+        {
+            Samples.Delete(id);
+        }
+
+        /// <summary>
+        /// Получить все образцы
+        /// </summary>
+        /// <param name="user"></param>
+        public static IEnumerable<SampleItem> GetAllSamples()
+        {
+            return Samples.GetAll();
+        }
+
+        /// <summary>
+        /// Получить образец по ид
+        /// </summary>
+        /// <param name="user"></param>
+        public static SampleItem GetSample(long id)
+        {
+            return Samples.Find(id);
+        }
+
+        /// <summary>
+        /// Получить образец по переданному относительному пути
+        /// </summary>
+        /// <param name="user"></param>
+        public static SampleItem GetSampleByPath(string path)
+        {
+            return Samples.GetByPath(path);
+        }
+
+        /// <summary>
+        /// Переименовать образец
+        /// </summary>
+        /// <param name="id"></param>
+        public static void RenameSample(SampleItem sample, string name)
+        {
+            sample.Title = name;
+            Samples.Save(sample);
         }
 
         #endregion

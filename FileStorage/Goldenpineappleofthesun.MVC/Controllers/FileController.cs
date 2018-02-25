@@ -32,14 +32,17 @@ namespace Goldenpineappleofthesun.MVC.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
-        // GET: File
+        
         [HttpPost]
         public ActionResult Delete(string login, string name)
         {
             var doc = DBHelper.GetUserDocument(login, name);
+
             if (doc != null)
+            {
+                System.IO.File.Delete(doc.FileName);
                 DBHelper.DeleteDocument(doc);
+            }
 
             return View();
         }
@@ -54,7 +57,6 @@ namespace Goldenpineappleofthesun.MVC.Controllers
                 DBHelper.MarkDocumentAsMissed(file);
                 return View();
             }
-
 
             System.Diagnostics.Process.Start(path);
 

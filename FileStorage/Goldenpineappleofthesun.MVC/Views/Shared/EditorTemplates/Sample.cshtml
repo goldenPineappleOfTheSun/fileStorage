@@ -1,0 +1,27 @@
+﻿@model Goldenpineappleofthesun.Database.Models.SampleItem
+
+@{ 
+    var path = Model.RelPath.Replace("\\", "/");
+}
+
+<div class="sample-document">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="sample-document-title">@(Model.Title.Length <= 30 ? Model.Title : $"{Model.Title.Substring(0,27)} … {Model.Title.Substring(Model.Title.Length-4)}")</div>
+        </div>
+        <div class="col-md-5">
+            <div class="sample-document-path">@(Model.RelPath)</div>
+        </div>
+        <!-- TODO: missed samples -->
+        <div class="col-md-1">
+            <div class="document-renm" onclick="renameDocument($(this).parents('.sample-document'), '@(Model.Id)', prompt('Наименование:'))">
+                <div class="document-renm-button a-small-button">переимен.</div>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="document-del" onclick="deleteDocument($(this).parents('.sample-document'), '@(Model.Id)', '@(Model.RelPath)')">
+                <div class="document-del-button a-small-button">удалить</div>
+            </div>
+        </div>
+    </div>
+</div>
