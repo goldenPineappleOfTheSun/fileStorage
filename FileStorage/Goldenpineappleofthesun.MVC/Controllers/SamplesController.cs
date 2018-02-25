@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -95,6 +96,19 @@ namespace Goldenpineappleofthesun.MVC.Controllers
             }
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Rename(long id, string name)
+        {
+            var smpl = DBHelper.GetSample(id);
+
+            if (smpl != null)
+            {
+                DBHelper.RenameSample(smpl, name);
+            }
+
+            return RedirectToAction("Samples", "Manage");
         }
     }
 }

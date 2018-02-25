@@ -289,7 +289,6 @@ namespace Goldenpineappleofthesun.MVC
             DeleteSample(sample.Id);
         }
 
-
         /// <summary>
         /// Удалить образец
         /// </summary>
@@ -324,6 +323,16 @@ namespace Goldenpineappleofthesun.MVC
         public static SampleItem GetSampleByPath(string path)
         {
             return Samples.GetByPath(path);
+        }
+
+        /// <summary>
+        /// Переименовать образец
+        /// </summary>
+        /// <param name="id"></param>
+        public static void RenameSample(SampleItem sample, string name)
+        {
+            sample.Title = name;
+            Samples.Save(sample);
         }
 
         #endregion

@@ -19,6 +19,23 @@
         font-size: 1.1rem;
         font-style: italic;
     }
+    .document-renm {
+        height: 50px;
+        color: #333333;
+        font-size: 0.8rem;
+        line-height: 50px;
+        font-style: italic;
+        cursor: default;
+    }
+    .document-renm-button {
+        position: relative;
+        width: 100%;
+        top: 10px;
+    }
+    .document-renm-button:hover {
+        color: forestgreen;   
+        border-color: forestgreen;
+    }
     .document-del {
         height: 50px;
         color: #333333;
@@ -87,5 +104,19 @@
                 path: path
             }
         })
+    }
+
+    // переименовать
+    function renameDocument(element, id, name) {
+
+        $(element).remove();
+        $.ajax({
+            url: "@(Url.Action("Rename", "Samples"))",
+            method: "POST",
+        data: {
+            id: parseInt(id),
+            name: name
+        }
+    })
     }
 </script>
