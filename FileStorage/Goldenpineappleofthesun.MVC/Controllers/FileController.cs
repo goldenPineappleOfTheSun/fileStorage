@@ -32,8 +32,7 @@ namespace Goldenpineappleofthesun.MVC.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
-        // GET: File
+        
         [HttpPost]
         public ActionResult Delete(string login, string name)
         {

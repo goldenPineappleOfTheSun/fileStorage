@@ -81,5 +81,16 @@ namespace Goldenpineappleofthesun.MVC.Controllers
 
             return RedirectToAction("Samples", "Manage");
         }
+        
+        [HttpPost]
+        public ActionResult Delete(long id, string path)
+        {
+            // TODO: Status inst of actual removing 
+            var smpl = DBHelper.GetSample(id);
+            if (smpl != null)
+                DBHelper.DeleteSample(smpl);
+
+            return View();
+        }
     }
 }

@@ -279,6 +279,25 @@ namespace Goldenpineappleofthesun.MVC
         }
 
         /// <summary>
+        /// Удалить образец
+        /// </summary>
+        /// <param name="sample"></param>
+        public static void DeleteSample(SampleItem sample)
+        {
+            DeleteSample(sample.Id);
+        }
+
+
+        /// <summary>
+        /// Удалить образец
+        /// </summary>
+        /// <param name="id"></param>
+        public static void DeleteSample(long id)
+        {
+            Samples.Delete(id);
+        }
+
+        /// <summary>
         /// Получить все образцы
         /// </summary>
         /// <param name="user"></param>

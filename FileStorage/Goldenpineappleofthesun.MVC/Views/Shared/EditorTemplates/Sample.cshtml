@@ -14,7 +14,7 @@
         </div>
         <!-- TODO: missed samples -->
         <div class="col-md-1">
-            <div class="document-del" onclick="">
+            <div class="document-del" onclick="deleteDocument($(this).parents('.sample-document'), '@(Model.Id)', '@(Model.RelPath)')">
                 <div class="document-del-button a-small-button">удалить</div>
             </div>
         </div>

@@ -68,9 +68,24 @@
 
         reader.readAsDataURL(file);
 
-        // как только фото загружено
         reader.onload = function (event) {
             $('#submit-file').click();
         }
     })
+
+    // удалить файл
+    function deleteDocument(element, id, path) {
+        if (!confirm("Вы точно хотите удалить этот файл?"))
+            return;
+
+        $(element).remove();
+        $.ajax({
+            url: "@(Url.Action("Delete", "Samples"))",
+            method: "POST",
+            data: {
+                id: parseInt(id),
+                path: path
+            }
+        })
+    }
 </script>
