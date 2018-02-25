@@ -9,5 +9,14 @@ namespace Goldenpineappleofthesun.Database.Repositories
 {
     public class NHSampleRepository : NHRepository<SampleItem>
     {
+        public SampleItem GetByPath(string path)
+        {
+            var session = NHHelper.GetCurrentSession();
+
+            return session
+                .QueryOver<SampleItem>()
+                .And(i => i.RelPath == path)
+                .SingleOrDefault();
+        }
     }
 }

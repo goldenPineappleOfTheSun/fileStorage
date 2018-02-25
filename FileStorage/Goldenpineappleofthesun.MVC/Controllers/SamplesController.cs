@@ -60,20 +60,26 @@ namespace Goldenpineappleofthesun.MVC.Controllers
 
                 if (pdoc == null)
                     DBHelper.AddDocument(name, $"{path}\\{name}", user);
+            }
+        }
 
-                /*  var path = Server.MapPath($"~\\Files\\{User.Identity.Name}");
-                  var user = DBHelper.GetUserByLogin(User.Identity.Name);
-                  var pdoc = DBHelper.GetUserDocument(user, fileName);
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase upload)
+        {
+            if (upload != null)
+            {
+                string fileName = System.IO.Path.GetFileName(upload.FileName);
 
-                  Directory.CreateDirectory(path);
+                var path = Server.MapPath($"~\\Samples\\");
+                var pdoc = DBHelper.GetSampleByPath(path);
 
-                  upload.SaveAs($"{path}/{fileName}");
+                upload.SaveAs($"{path}/{fileName}");
 
-                  if (pdoc == null)
-                      DBHelper.AddDocument(fileName, $"{path}\\{fileName}", user);*/
+                if (pdoc == null)
+                    DBHelper.AddSample(fileName, fileName);
             }
 
-            //return RedirectToAction("Index", "Home");
+            return RedirectToAction("Samples", "Manage");
         }
-     }
+    }
 }

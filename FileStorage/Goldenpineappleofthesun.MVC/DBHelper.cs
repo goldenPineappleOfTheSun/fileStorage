@@ -254,7 +254,21 @@ namespace Goldenpineappleofthesun.MVC
         #endregion
 
         #region Samples
-        
+
+        /// <summary>
+        /// Добавить образец
+        /// </summary>
+        /// <param name="user"></param>
+        public static void AddSample(string title, string path)
+        {
+            var sample = new SampleItem();
+            sample.Id = 0;
+            sample.Title = title;
+            sample.RelPath = path;
+
+            Samples.Save(sample);
+        }
+
         /// <summary>
         /// Добавить образец
         /// </summary>
@@ -280,6 +294,15 @@ namespace Goldenpineappleofthesun.MVC
         public static SampleItem GetSample(long id)
         {
             return Samples.Find(id);
+        }
+
+        /// <summary>
+        /// Получить образец по переданному относительному пути
+        /// </summary>
+        /// <param name="user"></param>
+        public static SampleItem GetSampleByPath(string path)
+        {
+            return Samples.GetByPath(path);
         }
 
         #endregion

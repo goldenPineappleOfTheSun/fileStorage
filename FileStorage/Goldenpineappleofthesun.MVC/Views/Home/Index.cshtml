@@ -5,63 +5,17 @@
     var docs = Model;
 }
 
-<link rel="stylesheet" href="../files/fonts.css">
+<link rel="stylesheet" href="../content/fonts.css">
+<link rel="stylesheet" href="../content/common.css">
 <style>
-    html {
-        font-family: montserrat;
-        font-size: 14px;
-    }
-    body {
-        background: #388a43;
-    }
+    
     .jumbotron {    
         margin-top: 30px;
         background: #e2e6c1; 
     }
-    .a-button,
-    .a-small-button {
-        box-sizing: border-box;
-        border: 1px solid #928d8d;
-        border-bottom: 3px solid #928d8d;
-        border-radius: 5px;
-        text-align: center;
-    }
-    .a-button:hover,
-    .a-small-button:hover {
-        border-bottom-width: 4px;
-        transform: translateY(-2px);
-    }
-    .a-button:active,
-    .a-small-button:active {
-        border-bottom-width: 1px;
-        transform: translateY(1px);
-    }
-    .a-button {
-        height: 40px;
-        font-size: 0.9rem;
-        line-height: 28px;
-    }
-    .a-small-button {
-        height: 30px;
-        line-height: 27px;
-        font-family: cormorantgaramond;
-        font-size: 0.9rem;
-        font-style: italic;
-        font-weight: bold;
-        color: #333333;
-    }
-    .a-button:hover {
-       height: 42px;
-       margin-bottom: -2px;
-    }
-    .a-small-button:hover {
-        height: 32px;
-    }
-    .a-button:active {
-        height: 39px;
-    }
-    .a-small-button:active {
-        height: 29px;
+    .document {    
+        border-bottom: 1px solid #cacaca;
+        height: 50px;
     }
     .document-header {    
         border-bottom: 1px solid #cacaca;
@@ -105,10 +59,6 @@
     }
     .document-search:focus {
         width: 100%;
-    }
-    .document {    
-        border-bottom: 1px solid #cacaca;
-        height: 50px;
     }
     .document-name {
         display: inline-block;
@@ -246,7 +196,7 @@
         margin-right: 15px;
         position: relative;
         display: inline-block;
-        margin: 15px 0 0 0;
+        margin: 15px 15px 0 0;
         padding: 15px;
         border: 1px dotted gray;
         text-align: center;

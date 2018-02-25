@@ -1,0 +1,76 @@
+﻿
+<link rel="stylesheet" href="../content/fonts.css">
+<link rel="stylesheet" href="../content/common.css">
+<style>
+    .sample-document {
+        border-bottom: 1px solid #cacaca;
+        height: 50px;
+    }
+    .jumbotron {    
+        margin-top: 30px;
+        background: #e2e6c1; 
+    }
+    .sample-document-title {
+        display: inline-block;
+        font-size: 1.1rem;
+    }
+    .sample-document-path {
+        display: inline-block;
+        font-size: 1.1rem;
+        font-style: italic;
+    }
+    .document-del {
+        height: 50px;
+        color: #333333;
+        font-size: 0.8rem;
+        line-height: 50px;
+        font-style: italic;
+        cursor: default;
+    }
+    .document-del-button {
+        position: relative;
+        width: 100%;
+        top: 10px;
+    }
+    .document-del-button:hover {
+        color: red;   
+        border-color: red;
+    }
+</style>
+
+@model IEnumerable<Goldenpineappleofthesun.Database.Models.SampleItem>
+
+<div class="jumbotron">
+    <div class="row">
+        @using (Html.BeginForm("Upload", "Samples", FormMethod.Post, new { enctype = "multipart/form-data", @class = "upload-form" }))
+            {
+            @Html.AntiForgeryToken()
+                <!-- load-file и submit-file скрыты, их клики вызываются программно -->
+                <input type="button" onclick="$('#load-file')[0].click()" value="Загрузить новый образец" class="upload-button a-button" />
+                <input id="load-file" type="file" name="upload" style="display:none" />
+                <input id="submit-file" type="submit" value="Загрузить" style="display:none" />
+        }
+
+        @foreach (var item in Model)
+        {
+            @Html.EditorFor(i => item, "Sample")
+        }
+     </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    // нажатие на кнопку "Загрузить файл"
+    $('#load-file').on('change', function (event) {
+        var file = this.files[0];
+        var reader = new FileReader();
+
+        reader.readAsDataURL(file);
+
+        // как только фото загружено
+        reader.onload = function (event) {
+            $('#submit-file').click();
+        }
+    })
+</script>
