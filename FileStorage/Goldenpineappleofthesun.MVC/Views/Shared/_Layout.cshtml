@@ -22,7 +22,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("О программе", "About", "Home")</li>
-                    
+
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Образцы", "Samples", "Manage")</li>
+                    }
+
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li><a href="#">🙋 - @User.Identity.Name</a></li>

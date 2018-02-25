@@ -9,6 +9,8 @@ namespace Goldenpineappleofthesun.MVC
 {
     public class DBHelper
     {
+        // TODO: рзделить н несколтько классов
+
         private static NHUserRepository Users = new NHUserRepository();
         private static NHDocumentRepository Documents = new NHDocumentRepository();
         private static NHRoleRepository Roles = new NHRoleRepository();

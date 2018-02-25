@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Goldenpineappleofthesun.MVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ManageController : Controller
     {
         // GET: Manage

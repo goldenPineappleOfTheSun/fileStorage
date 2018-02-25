@@ -34,7 +34,8 @@ namespace Goldenpineappleofthesun.MVC.Controllers
 
             return View(files);
         }
-
+        
+        [AllowAnonymous]
         public ActionResult About()
         {
             ViewBag.Title = "Файловый менеджер.";

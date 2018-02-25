@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Goldenpineappleofthesun.MVC.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class SamplesController : Controller
     {
         private string JsonSamples = "{}";

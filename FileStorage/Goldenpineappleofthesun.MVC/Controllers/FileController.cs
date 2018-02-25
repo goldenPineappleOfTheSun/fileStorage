@@ -58,7 +58,6 @@ namespace Goldenpineappleofthesun.MVC.Controllers
                 return View();
             }
 
-
             System.Diagnostics.Process.Start(path);
 
             return View();
