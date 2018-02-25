@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Goldenpineappleofthesun.MVC.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize]
     public class SamplesController : Controller
     {
         private string JsonSamples = "{}";
@@ -65,6 +65,7 @@ namespace Goldenpineappleofthesun.MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult Upload(HttpPostedFileBase upload)
         {
             if (upload != null)
@@ -84,6 +85,7 @@ namespace Goldenpineappleofthesun.MVC.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(long id, string path)
         {
             // TODO: Status inst of actual removing 
@@ -99,6 +101,7 @@ namespace Goldenpineappleofthesun.MVC.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public ActionResult Rename(long id, string name)
         {
             var smpl = DBHelper.GetSample(id);
