@@ -67,6 +67,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\SampleItem.cs" />
     <Compile Include="Models\DocumentItem.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\UserItem.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\NHDocumentRepository.cs" />
     <Compile Include="Repositories\NHRepository.cs" />
+    <Compile Include="Repositories\NHSampleRepository.cs" />
     <Compile Include="Repositories\NHRoleRepository.cs" />
     <Compile Include="Repositories\NHUserRepository.cs" />
   </ItemGroup>
@@ -93,6 +95,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Database.mdf</DependentUpon>
     </Content>
+    <EmbeddedResource Include="Mappings\SampleItem.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Mappings\DocumentItem.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -12,6 +12,7 @@ namespace Goldenpineappleofthesun.MVC
         private static NHUserRepository Users = new NHUserRepository();
         private static NHDocumentRepository Documents = new NHDocumentRepository();
         private static NHRoleRepository Roles = new NHRoleRepository();
+        private static NHSampleRepository Samples = new NHSampleRepository();
 
         public DBHelper()
         {
@@ -248,6 +249,37 @@ namespace Goldenpineappleofthesun.MVC
         public static RoleItem GetRoleByName(string name)
         {
             return Roles.GetByName(name);
+        }
+
+        #endregion
+
+        #region Samples
+        
+        /// <summary>
+        /// Добавить образец
+        /// </summary>
+        /// <param name="user"></param>
+        public static void AddSample(SampleItem sample)
+        {
+            Samples.Save(sample);
+        }
+
+        /// <summary>
+        /// Получить все образцы
+        /// </summary>
+        /// <param name="user"></param>
+        public static IEnumerable<SampleItem> GetAllSamples()
+        {
+            return Samples.GetAll();
+        }
+
+        /// <summary>
+        /// Получить образец по ид
+        /// </summary>
+        /// <param name="user"></param>
+        public static SampleItem GetSample(long id)
+        {
+            return Samples.Find(id);
         }
 
         #endregion

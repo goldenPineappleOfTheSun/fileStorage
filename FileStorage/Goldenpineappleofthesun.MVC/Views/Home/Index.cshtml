@@ -187,12 +187,98 @@
         border-color: #000000;
         margin-bottom: 17px; /* upload-button.hover - утолщение нижней границы */
     }
+    .samples-button {
+        background: none;
+    }
+    .samples-button:hover {
+        color: #000000;
+        border-color: #000000;
+    }
+    .samples-button:active {
+        color: #000000;
+        border-color: #000000;
+    }
     .document-missed {
         line-height: 50px;
         width: 100%;
         text-align: center;
         color: #ce6262;
         font-size: 0.8rem;
+    }
+    #samples-wrapper {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(0,0,0,0.5);
+    }
+    #samples {
+        position: fixed;
+        overflow-y: scroll;
+        left: 20%;
+        top: 100px;
+        width: 60%;
+        min-height: 100px;
+        padding: 30px;
+        border-radius: 5px;
+        background: #ffffff;
+    }
+    #samples-name {
+        display: none;
+        position: fixed;
+        left: 20%;
+        top: 40%;
+        transform: translateY(-50%);
+        width: 60%;
+        padding: 30px;
+        border-radius: 5px;
+        background: #ffffff;
+    }
+    #samples h2,
+    #samples-name h2 {
+        position: relative;
+        font-size: 1.5rem;
+        font-family: cormorantgaramond
+    }
+    .sample-title {
+        margin-right: 15px;
+        position: relative;
+        display: inline-block;
+        margin: 15px 0 0 0;
+        padding: 15px;
+        border: 1px dotted gray;
+        text-align: center;
+        cursor: default;
+    }
+    .sample-title:hover {
+        border-color: black;
+        background: #e4d6ab;
+    }
+    .sample-name-field {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 15px;
+        border: none;
+        border-bottom: 2px solid gray;
+    }
+    .sample-name-button {
+        position: relative;
+        display: block;
+        left: 40%;
+        width: 20%;
+        max-width: 100%;
+        margin-bottom: 15px;
+        margin-bottom: 15px;    
+        background: none;
+        border: 1px solid gray;
+        border-bottom-width: 3px;
+        border-radius: 5px;
+    }
+    .upload-form {
+        display: inline-block;
     }
 </style>
 
@@ -202,11 +288,15 @@
             @using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data", @class = "upload-form" }))
             {
                 @Html.AntiForgeryToken()
+                <!-- load-file и submit-file скрыты, их клики вызываются программно -->
                 <input type="button" onclick="$('#load-file')[0].click()" value="Загрузить новый файл" class="upload-button a-button"/>
                 <input id="load-file" type="file" name="upload" style="display:none"/>
                 <input id="submit-file" type="submit" value="Загрузить" style="display:none"/>
+                <input type="button" onclick="showSamples()" value="Создать типовой файл" class="samples-button a-button" />
             }
-
+            <input type="button" id="disco-button" onclick="$(body).css('transition', '0.2s linear'); $('#disco-button').css('transition', '0.2s linear'); disco = 0; setInterval(function () { disco = (disco + 10) % 360; $(body)[0].style.backgroundColor = 'hsl(' + disco + ',40%,50%)'; $('#disco-button')[0].style.borderColor = 'hsl(' + disco + ',50%,50%)'; $('#disco-button')[0].style.backgroundColor = 'hsl(' + disco + ',50%,40%)' }, 200)" value="Диско-кнопка" class="disco-button a-button" />
+           
+             <!-- DocumentHeader содержит кнопки, которые управляют сортировкой -->
             @Html.EditorFor(m => docs, "DocumentHeader")
             <div id="document-list">
                 @foreach (var item in docs)
@@ -215,6 +305,18 @@
                 }
             </div>
         </div>
+    </div>
+</div>
+
+<!-- модальная форма для создания типового документа -->
+<div id="samples-wrapper" onclick="if (event.target === this) { this.style.display = 'none' }">
+    <div id="samples">
+        <div onclick="selectSample(1, '12345')">12345</div>
+    </div>
+    <div id="samples-name">
+        <h2 class="sample-choosen-title"></h2>
+        <input class="sample-name-field" type="text" value="Введите название"/>
+        <input class="sample-name-button" type="button" onclick="nameSample($(this).siblings('.sample-name-field').val()); createSample()" value="Готово"/>
     </div>
 </div>
 
@@ -265,9 +367,9 @@
 
 <script>
     var listOptions = {
-        sortName: false,
+        sortName: true,
         sortAuthor: false,
-        sortDate: true,
+        sortDate: false,
         search: '',
         timer: 0
     }
@@ -320,8 +422,6 @@
     function filterDosuments(filter) {
         var filter = filter || listOptions.search;
         var list = $('.document').toArray();
-
-        console.log(filter)
 
         // display none если не отфильтровано
         // display block если отфильтровано
@@ -478,5 +578,71 @@
                 return -1;
         }
         return 0;
+    }
+</script>
+
+<script>
+    var samplesData = {
+        selected: 1,
+        name: ''
+    }
+
+    function showSamples() {
+        $('#samples-wrapper').css('display', 'block');
+        getSamples(function (data) {
+            // TODO: performance
+
+            $('#samples').html('<h2>Выберите образец</h2>');
+
+            var data = JSON.parse(data);
+            //var items = [];
+
+            for (var i in data) {
+                var item = data[i];
+                console.log(item);
+                $('#samples').append(`<div class="sample-title" onclick="selectSample(${item.id}, '${item.title}')">${item.title}</div>`);
+                //var element = document.createElement('div');
+            }
+                //items.push();
+
+            //$('#samples').html(data)
+        });
+    }
+
+    // выбрать образец для создания
+    function selectSample(id, title) {
+        samplesData.selected = id;
+        $('#samples').css('display', 'none');
+        $('#samples-name').css('display', 'block');
+        $('#samples-name').children('.sample-choosen-title').html(title);
+    }
+
+    // выбрать имя для создания
+    function nameSample(name) {
+        samplesData.name = name;
+    }
+
+    // создать по образцу (когда образец и имя выбраны)
+    function createSample() {
+        $('#samples').css('display', 'block');
+        $('#samples-name').css('display', 'none');
+        $('#samples-wrapper').css('display', 'none');
+        
+        $.ajax({
+            url: "@(Url.Action("Create", "Samples"))",
+            method: "POST",
+            data: samplesData,
+            success: function(){
+                document.location.reload()
+            }
+        })
+    }
+
+    function getSamples(func) {
+        $.ajax({
+            url: "@(Url.Action("GetAll", "Samples"))",
+            method: "POST",
+            success: func
+        })
     }
 </script>
